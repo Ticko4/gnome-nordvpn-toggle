@@ -326,11 +326,14 @@ class NordVpnToggle extends QuickMenuToggle {
         // scroll view: activating a country only drills down instead of
         // closing the menu. Connecting closes the menu explicitly.
         this._listSection = new PopupMenu.PopupMenuSection();
+        // No overlay scrollbar: the rows span the full width and would sit on
+        // top of it, so clicking the bar activated the row underneath (and
+        // could connect) instead of grabbing the bar.
         this._scroll = new St.ScrollView({
             style_class: 'nordvpn-location-list',
             hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.AUTOMATIC,
-            overlay_scrollbars: true,
+            overlay_scrollbars: false,
             child: this._listSection.actor,
         });
         const listHolder = new PopupMenu.PopupMenuSection();
