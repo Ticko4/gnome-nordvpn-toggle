@@ -23,6 +23,11 @@ For GNOME Shell 51. Requires the [NordVPN app for Linux](https://nordvpn.com/dow
 - **It follows the real state**, including connections made from the terminal or the NordVPN app, and shows
   *Connecting…*, *Not logged in*, *No permission* or *Service not running* when that is the case, with a
   notification explaining what to do.
+- **No duplicate VPN toggle**: NordVPN's WireGuard interface (`nordlynx`) shows up in NetworkManager, so
+  GNOME adds its own *VPN* toggle and top bar icon when you connect, and the Quick Settings layout jumps. While
+  NordVPN is the only VPN they would show, the extension hides them; any other VPN still shows as usual.
+
+![GNOME's VPN toggle with and without the extension](docs/gnome-vpn-toggle.png)
 
 ## Install
 
@@ -65,6 +70,9 @@ GitHub releases attach the same zip as `nordvpn-toggle.zip`, which `get.sh` down
 - Countries are read the first time the menu opens and cities the first time a country is opened; both are
   kept for the session.
 - Recent locations are stored in `~/.local/state/nordvpn-toggle/recent.json`.
+- To hide GNOME's VPN toggle, the extension hooks the toggle's internal `_sync()` with GNOME's
+  `InjectionManager` and checks its connections after every update; disabling the extension restores it.
+  If a GNOME update changes those internals, the hook is skipped and GNOME's toggle simply shows again.
 
 Errors go to the GNOME Shell log: `journalctl -f -o cat /usr/bin/gnome-shell`.
 

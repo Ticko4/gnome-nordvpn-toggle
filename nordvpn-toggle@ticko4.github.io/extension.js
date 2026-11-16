@@ -15,7 +15,7 @@ import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+import {Extension, InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {QuickMenuToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
@@ -255,6 +255,8 @@ class NordVpnToggle extends QuickMenuToggle {
         this._refreshId = 0;
         this._refreshing = false;
         this._refreshQueued = false;
+        this._statusSeq = 0; // numbers status reads, so a late one can't undo a newer one
+        this._appliedSeq = 0;
         this._idleIds = new Set();
 
         this._countries = null;
@@ -574,6 +576,38 @@ class NordVpnToggle extends QuickMenuToggle {
             this._rebuildList();
     }
 
+    /**
+     * Run `nordvpn status`. Only throws when cancelled.
+     *
+     * @returns {Promise<{seq: number, info?: object, error?: Error}>}
+     */
+    async _fetchStatus() {
+        const seq = ++this._statusSeq;
+        try {
+            return {seq, info: parseStatus(await runCli(['status'], this._cancellable))};
+        } catch (e) {
+            if (isCancelled(e))
+                throw e;
+            return {seq, error: e};
+        }
+    }
+
+    /**
+     * Show a status read, unless a read started later was already shown.
+     *
+     * @returns {boolean} whether it was applied
+     */
+    _applyResult({seq, info, error}) {
+        if (this._destroyed || seq < this._appliedSeq)
+            return false;
+        this._appliedSeq = seq;
+        if (error)
+            this._applyError(error);
+        else
+            this._applyStatus(info);
+        return true;
+    }
+
     _scheduleRefresh(delayMs) {
         if (this._destroyed)
             return;
@@ -594,11 +628,11 @@ class NordVpnToggle extends QuickMenuToggle {
 
         this._refreshing = true;
         try {
-            this._applyStatus(parseStatus(await runCli(['status'], this._cancellable)));
+            this._applyResult(await this._fetchStatus());
         } catch (e) {
             if (isCancelled(e))
                 return;
-            this._applyError(e);
+            throw e;
         } finally {
             this._refreshing = false;
         }
@@ -663,18 +697,35 @@ class NordVpnToggle extends QuickMenuToggle {
             if (serial === this._opSerial)
                 onSuccess?.();
         } catch (e) {
-            if (isCancelled(e) || serial !== this._opSerial)
+            if (isCancelled(e))
                 return;
-            if (e.kind === 'login')
-                this._loginRequired = true;
-            this._notifyError(errorTitle, e);
-        } finally {
-            if (!this._destroyed && serial === this._opSerial) {
-                this._pending = null;
-                this._sync();
-                this._scheduleRefresh(0);
+            if (serial === this._opSerial) {
+                if (e.kind === 'login')
+                    this._loginRequired = true;
+                this._notifyError(errorTitle, e);
             }
         }
+        if (this._destroyed || serial !== this._opSerial)
+            return;
+
+        // Read the new state before leaving "Connecting…"/"Disconnecting…":
+        // showing the state from before the command, even for one frame,
+        // makes the toggle and the top bar icon flash.
+        let result;
+        try {
+            result = await this._fetchStatus();
+        } catch (e) {
+            if (isCancelled(e))
+                return;
+            throw e;
+        }
+        if (this._destroyed || serial !== this._opSerial)
+            return;
+
+        this._pending = null;
+        if (!this._applyResult(result))
+            this._sync();
+        this._scheduleRefresh(this._state === State.CONNECTING ? POLL_BUSY_MS : POLL_IDLE_MS);
     }
 
     _notifyError(title, error) {
@@ -702,6 +753,76 @@ class NordVpnToggle extends QuickMenuToggle {
     }
 });
 
+// ---------------------------------------------------------------------------
+// GNOME's own VPN toggle
+// ---------------------------------------------------------------------------
+
+// Interfaces NordVPN creates. NetworkManager lists the NordLynx (WireGuard)
+// one as a connection, so GNOME shows its VPN toggle and top bar icon for it.
+const NORD_INTERFACES = ['nordlynx', 'nordtun'];
+
+function isNordConnection(connection) {
+    return [connection.get_id?.(), connection.get_interface_name?.()]
+        .some(name => NORD_INTERFACES.includes(name));
+}
+
+/**
+ * Hides GNOME's VPN toggle and top bar icon while NordVPN's connection is the
+ * only one they would show, so connecting does not add a second VPN toggle.
+ * Other VPNs keep showing as usual.
+ */
+class GnomeVpnHider {
+    constructor() {
+        const network = Main.panel.statusArea.quickSettings._network;
+        this._toggle = network?._vpnToggle;
+        this._icon = network?._vpnIndicator;
+
+        // Internal GNOME Shell API: leave everything alone if it changed.
+        if (!(this._toggle?._items instanceof Map) || typeof this._toggle._sync !== 'function') {
+            this._toggle = null;
+            return;
+        }
+
+        const hider = this;
+        this._injections = new InjectionManager();
+        this._injections.overrideMethod(this._toggle, '_sync', original => function (...args) {
+            original.apply(this, args);
+            hider._apply();
+        });
+        // The icon follows the toggle's "checked" state through a binding.
+        this._icon?.connectObject('notify::visible', () => this._apply(), this);
+        this._apply();
+    }
+
+    _onlyNord() {
+        const connections = [...this._toggle._items.keys()];
+        return connections.length > 0 && connections.every(isNordConnection);
+    }
+
+    _apply() {
+        if (this._onlyNord()) {
+            this._toggle.visible = false;
+            if (this._icon)
+                this._icon.visible = false;
+        } else if (this._icon) {
+            // Undo an earlier hide once another VPN shows up; GNOME binds
+            // the icon to "checked", which may not have changed since.
+            this._icon.visible = this._toggle.checked;
+        }
+    }
+
+    destroy() {
+        if (!this._toggle)
+            return;
+        this._icon?.disconnectObject(this);
+        this._injections.clear();
+        this._toggle._sync();
+        if (this._icon)
+            this._icon.visible = this._toggle.checked;
+        this._toggle = null;
+    }
+}
+
 const NordVpnIndicator = GObject.registerClass(
 class NordVpnIndicator extends SystemIndicator {
     constructor(extension) {
@@ -725,9 +846,12 @@ export default class NordVpnToggleExtension extends Extension {
     enable() {
         this._indicator = new NordVpnIndicator(this);
         Main.panel.statusArea.quickSettings.addExternalIndicator(this._indicator);
+        this._vpnHider = new GnomeVpnHider();
     }
 
     disable() {
+        this._vpnHider.destroy();
+        this._vpnHider = null;
         this._indicator.quickSettingsItems.forEach(item => item.destroy());
         this._indicator.destroy();
         this._indicator = null;
