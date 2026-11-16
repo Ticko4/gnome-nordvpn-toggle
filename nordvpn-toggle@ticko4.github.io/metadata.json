@@ -1,0 +1,11 @@
+{
+  "uuid": "nordvpn-toggle@ticko4.github.io",
+  "name": "NordVPN Toggle",
+  "description": "NordVPN toggle for the Quick Settings menu.\n\nClick it to connect or disconnect. Its menu lists your recent locations and every country and city, with a search field, plus a shortcut to the NordVPN app for everything else. It follows the real VPN state, including changes made from the terminal or the NordVPN app.\n\nRequires the NordVPN app for Linux (the nordvpn command). Based on NordVPN Quick Toggle by Wedaxi. Not affiliated with NordVPN.",
+  "shell-version": [
+    "51"
+  ],
+  "url": "https://github.com/Ticko4/gnome-nordvpn-toggle",
+  "version": 1,
+  "version-name": "1.0"
+}

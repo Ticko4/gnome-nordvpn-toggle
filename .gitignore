@@ -1,0 +1,3 @@
+# Build artifacts (install.sh --pack regenerates them)
+*.shell-extension.zip
+nordvpn-toggle.zip

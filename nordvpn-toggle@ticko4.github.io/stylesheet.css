@@ -1,0 +1,18 @@
+/* Long country/city lists scroll inside the menu. */
+.nordvpn-location-list {
+  max-height: 300px;
+}
+
+.nordvpn-search-item {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.nordvpn-search-entry {
+  min-height: 0;
+}
+
+.nordvpn-search-icon {
+  icon-size: 16px;
+  padding: 0 4px;
+}
