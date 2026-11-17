@@ -6,15 +6,26 @@ set -euo pipefail
 
 UUID="nordvpn-toggle@ticko4.github.io"
 OLD_UUID="nordvpn-toggle@local"   # pre-release name, removed below
+DOMAIN="nordvpn-toggle"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="$ROOT/$UUID"
 
 if [[ "${1:-}" == "--pack" ]]; then
-    gnome-extensions pack "$SRC" --force --out-dir "$ROOT" --extra-source=icons
+    # gnome-extensions compiles the translations from po/ into the zip.
+    gnome-extensions pack "$SRC" --force --out-dir "$ROOT" \
+        --extra-source=icons --podir="$ROOT/po" --gettext-domain="$DOMAIN"
     echo "Package: $ROOT/$UUID.shell-extension.zip"
     echo "Upload it at https://extensions.gnome.org/upload/"
     exit 0
 fi
+
+# Compile translations into the extension's locale directory.
+for po in "$ROOT"/po/*.po; do
+    [[ -e "$po" ]] || continue
+    lang="$(basename "$po" .po)"
+    mkdir -p "$SRC/locale/$lang/LC_MESSAGES"
+    msgfmt --check -o "$SRC/locale/$lang/LC_MESSAGES/$DOMAIN.mo" "$po"
+done
 
 EXT_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/gnome-shell/extensions"
 DEST="$EXT_DIR/$UUID"

@@ -1,0 +1,137 @@
+# Arabic translation for NordVPN Toggle.
+# This file is distributed under the same license as the NordVPN Toggle package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: NordVPN Toggle\n"
+"Report-Msgid-Bugs-To: https://github.com/Ticko4/gnome-nordvpn-toggle/issues\n"
+"POT-Creation-Date: 2026-11-17 13:48+0000\n"
+"PO-Revision-Date: 2026-11-17 03:00+0000\n"
+"Last-Translator: NordVPN Toggle contributors\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:73
+msgid "Not installed"
+msgstr "غير مثبّت"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:74
+msgid "The nordvpn command was not found. Install the NordVPN app."
+msgstr "لم يُعثر على الأمر nordvpn. ثبّت تطبيق NordVPN."
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:79
+msgid "No permission"
+msgstr "لا توجد صلاحية"
+
+#. TRANSLATORS: Keep the command between quotes as it is.
+#: nordvpn-toggle@ticko4.github.io/extension.js:81
+msgid ""
+"Your user is not in the nordvpn group. Run “sudo usermod -aG nordvpn $USER”, "
+"then log out and back in."
+msgstr ""
+"مستخدمك ليس في مجموعة nordvpn. شغّل «sudo usermod -aG nordvpn $USER» ثم اخرج "
+"من الجلسة وادخل مجددًا."
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:86
+msgid "Service not running"
+msgstr "الخدمة لا تعمل"
+
+#. TRANSLATORS: Keep the command between quotes as it is.
+#: nordvpn-toggle@ticko4.github.io/extension.js:88
+msgid ""
+"The NordVPN service is not running. Start it with “sudo systemctl enable --"
+"now nordvpnd”."
+msgstr ""
+"خدمة NordVPN لا تعمل. شغّلها بالأمر «sudo systemctl enable --now nordvpnd»."
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:93
+#: nordvpn-toggle@ticko4.github.io/extension.js:563
+msgid "Not logged in"
+msgstr "لم يُسجَّل الدخول"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:94
+msgid "Log in with the NordVPN app."
+msgstr "سجّل الدخول من تطبيق NordVPN."
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:99
+msgid "Error"
+msgstr "خطأ"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:100
+msgid "Unknown error"
+msgstr "عطل غير معروف"
+
+#. TRANSLATORS: Connect to the server NordVPN recommends (usually the fastest), anywhere or in the chosen country.
+#: nordvpn-toggle@ticko4.github.io/extension.js:179
+#: nordvpn-toggle@ticko4.github.io/extension.js:413
+#: nordvpn-toggle@ticko4.github.io/extension.js:441
+msgid "Recommended server"
+msgstr "الخادوم المُوصى به"
+
+#. TRANSLATORS: Heading above the search field and the list of countries and cities.
+#: nordvpn-toggle@ticko4.github.io/extension.js:322
+msgid "Locations"
+msgstr "المواقع"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:326
+msgid "Search…"
+msgstr "ابحث…"
+
+#. TRANSLATORS: Opens the NordVPN app (for login, settings, etc.).
+#: nordvpn-toggle@ticko4.github.io/extension.js:366
+msgid "Open NordVPN"
+msgstr "افتح NordVPN"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:420
+#: nordvpn-toggle@ticko4.github.io/extension.js:447
+msgid "Loading…"
+msgstr "يحمّل…"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:426
+#: nordvpn-toggle@ticko4.github.io/extension.js:457
+msgid "No matches"
+msgstr "لا تطابقات"
+
+#. TRANSLATORS: Heading above the locations used most recently.
+#: nordvpn-toggle@ticko4.github.io/extension.js:472
+msgid "Recent"
+msgstr "الحديثة"
+
+#. TRANSLATORS: Menu header when connected but the location is unknown.
+#: nordvpn-toggle@ticko4.github.io/extension.js:549
+msgid "Connected"
+msgstr "متّصل"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:552
+msgid "Connecting…"
+msgstr "يتّصل…"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:555
+msgid "Disconnecting…"
+msgstr "يقطع الاتصال…"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:561
+msgid "Disconnected"
+msgstr "غير متّصل"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:682
+msgid "NordVPN is not available"
+msgstr "NordVPN غير متاح"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:701
+msgid "Could not connect to NordVPN"
+msgstr "تعذّر الاتصال بـNordVPN"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:711
+msgid "Could not disconnect from NordVPN"
+msgstr "تعذّر قطع الاتصال بـNordVPN"

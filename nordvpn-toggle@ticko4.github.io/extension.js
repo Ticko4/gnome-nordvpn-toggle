@@ -68,18 +68,37 @@ function isCancelled(error) {
 function describeError(error) {
     switch (error?.kind) {
     case 'missing':
-        return [_('Not installed'),
-            _('The nordvpn command was not found. Install the NordVPN app.')];
+        return [
+            // TRANSLATORS: Short status under the toggle's title (keep it short).
+            _('Not installed'),
+            _('The nordvpn command was not found. Install the NordVPN app.'),
+        ];
     case 'permission':
-        return [_('No permission'),
-            _('Your user is not in the nordvpn group. Run “sudo usermod -aG nordvpn $USER”, then log out and back in.')];
+        return [
+            // TRANSLATORS: Short status under the toggle's title (keep it short).
+            _('No permission'),
+            // TRANSLATORS: Keep the command between quotes as it is.
+            _('Your user is not in the nordvpn group. Run “sudo usermod -aG nordvpn $USER”, then log out and back in.'),
+        ];
     case 'daemon':
-        return [_('Service not running'),
-            _('The NordVPN service is not running. Start it with “sudo systemctl enable --now nordvpnd”.')];
+        return [
+            // TRANSLATORS: Short status under the toggle's title (keep it short).
+            _('Service not running'),
+            // TRANSLATORS: Keep the command between quotes as it is.
+            _('The NordVPN service is not running. Start it with “sudo systemctl enable --now nordvpnd”.'),
+        ];
     case 'login':
-        return [_('Not logged in'), _('Log in with the NordVPN app.')];
+        return [
+            // TRANSLATORS: Short status under the toggle's title (keep it short).
+            _('Not logged in'),
+            _('Log in with the NordVPN app.'),
+        ];
     default:
-        return [_('Error'), error?.message || _('Unknown error')];
+        return [
+            // TRANSLATORS: Short status under the toggle's title (keep it short).
+            _('Error'),
+            error?.message || _('Unknown error'),
+        ];
     }
 }
 
@@ -156,6 +175,7 @@ function targetLabel(target) {
     const [country, city] = target;
     if (city)
         return `${pretty(city)}, ${pretty(country)}`;
+    // TRANSLATORS: Connect to the server NordVPN recommends (usually the fastest), anywhere or in the chosen country.
     return country ? pretty(country) : _('Recommended server');
 }
 
@@ -298,6 +318,7 @@ class NordVpnToggle extends QuickMenuToggle {
         this._recentSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._recentSection);
 
+        // TRANSLATORS: Heading above the search field and the list of countries and cities.
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(_('Locations')));
 
         this._searchEntry = new St.Entry({
@@ -341,6 +362,7 @@ class NordVpnToggle extends QuickMenuToggle {
         this.menu.addMenuItem(listHolder);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        // TRANSLATORS: Opens the NordVPN app (for login, settings, etc.).
         this._guiItem = this.menu.addAction(_('Open NordVPN'), () => this._openGui());
         this._guiItem.visible = !!Shell.AppSystem.get_default().lookup_app(GUI_DESKTOP_ID);
 
@@ -446,6 +468,7 @@ class NordVpnToggle extends QuickMenuToggle {
         if (!this._recents.items.length)
             return;
 
+        // TRANSLATORS: Heading above the locations used most recently.
         this._recentSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(_('Recent')));
         for (const target of this._recents.items) {
             const item = new LocationItem(targetLabel(target),
@@ -522,6 +545,7 @@ class NordVpnToggle extends QuickMenuToggle {
         switch (state) {
         case State.CONNECTED:
             subtitle = info.country || info.server || null;
+            // TRANSLATORS: Menu header when connected but the location is unknown.
             header = [location || _('Connected'), server].filter(Boolean).join(' · ');
             break;
         case State.CONNECTING:

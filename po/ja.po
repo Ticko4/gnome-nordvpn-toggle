@@ -1,0 +1,138 @@
+# Japanese translation for NordVPN Toggle.
+# This file is distributed under the same license as the NordVPN Toggle package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: NordVPN Toggle\n"
+"Report-Msgid-Bugs-To: https://github.com/Ticko4/gnome-nordvpn-toggle/issues\n"
+"POT-Creation-Date: 2026-11-17 13:48+0000\n"
+"PO-Revision-Date: 2026-11-17 03:00+0000\n"
+"Last-Translator: NordVPN Toggle contributors\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:73
+msgid "Not installed"
+msgstr "未インストール"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:74
+msgid "The nordvpn command was not found. Install the NordVPN app."
+msgstr ""
+"nordvpn コマンドが見つかりません。NordVPN アプリをインストールしてください。"
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:79
+msgid "No permission"
+msgstr "権限がありません"
+
+#. TRANSLATORS: Keep the command between quotes as it is.
+#: nordvpn-toggle@ticko4.github.io/extension.js:81
+msgid ""
+"Your user is not in the nordvpn group. Run “sudo usermod -aG nordvpn $USER”, "
+"then log out and back in."
+msgstr ""
+"ユーザーが nordvpn グループに所属していません。「sudo usermod -aG nordvpn "
+"$USER」を実行してから、ログアウトして再度ログインしてください。"
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:86
+msgid "Service not running"
+msgstr "サービス停止中"
+
+#. TRANSLATORS: Keep the command between quotes as it is.
+#: nordvpn-toggle@ticko4.github.io/extension.js:88
+msgid ""
+"The NordVPN service is not running. Start it with “sudo systemctl enable --"
+"now nordvpnd”."
+msgstr ""
+"NordVPN サービスが動作していません。「sudo systemctl enable --now nordvpnd」"
+"で起動してください。"
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:93
+#: nordvpn-toggle@ticko4.github.io/extension.js:563
+msgid "Not logged in"
+msgstr "未ログイン"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:94
+msgid "Log in with the NordVPN app."
+msgstr "NordVPN アプリでログインしてください。"
+
+#. TRANSLATORS: Short status under the toggle's title (keep it short).
+#: nordvpn-toggle@ticko4.github.io/extension.js:99
+msgid "Error"
+msgstr "エラー"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:100
+msgid "Unknown error"
+msgstr "原因不明のエラー"
+
+#. TRANSLATORS: Connect to the server NordVPN recommends (usually the fastest), anywhere or in the chosen country.
+#: nordvpn-toggle@ticko4.github.io/extension.js:179
+#: nordvpn-toggle@ticko4.github.io/extension.js:413
+#: nordvpn-toggle@ticko4.github.io/extension.js:441
+msgid "Recommended server"
+msgstr "推奨サーバー"
+
+#. TRANSLATORS: Heading above the search field and the list of countries and cities.
+#: nordvpn-toggle@ticko4.github.io/extension.js:322
+msgid "Locations"
+msgstr "場所"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:326
+msgid "Search…"
+msgstr "検索…"
+
+#. TRANSLATORS: Opens the NordVPN app (for login, settings, etc.).
+#: nordvpn-toggle@ticko4.github.io/extension.js:366
+msgid "Open NordVPN"
+msgstr "NordVPN を開く"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:420
+#: nordvpn-toggle@ticko4.github.io/extension.js:447
+msgid "Loading…"
+msgstr "読み込み中…"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:426
+#: nordvpn-toggle@ticko4.github.io/extension.js:457
+msgid "No matches"
+msgstr "一致する項目はありません"
+
+#. TRANSLATORS: Heading above the locations used most recently.
+#: nordvpn-toggle@ticko4.github.io/extension.js:472
+msgid "Recent"
+msgstr "最近"
+
+#. TRANSLATORS: Menu header when connected but the location is unknown.
+#: nordvpn-toggle@ticko4.github.io/extension.js:549
+msgid "Connected"
+msgstr "接続済み"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:552
+msgid "Connecting…"
+msgstr "接続中…"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:555
+msgid "Disconnecting…"
+msgstr "切断中…"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:561
+msgid "Disconnected"
+msgstr "切断済み"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:682
+msgid "NordVPN is not available"
+msgstr "NordVPN は利用できません"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:701
+msgid "Could not connect to NordVPN"
+msgstr "NordVPN に接続できませんでした"
+
+#: nordvpn-toggle@ticko4.github.io/extension.js:711
+msgid "Could not disconnect from NordVPN"
+msgstr "NordVPN から切断できませんでした"

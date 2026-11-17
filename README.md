@@ -9,7 +9,8 @@ NordVPN app for everything else (login, kill switch, Meshnet, settings).
 | ![NordVPN Toggle menu](docs/screenshot.png) | ![Cities of a country](docs/screenshot-cities.png) |
 
 For GNOME Shell 51. Requires the [NordVPN app for Linux](https://nordvpn.com/download/linux/) (the
-`nordvpn` command and the `nordvpnd` service). Not affiliated with NordVPN.
+`nordvpn` command and the `nordvpnd` service). The interface follows the system language; see
+[Translations](#translations). Not affiliated with NordVPN.
 
 ## What it does
 
@@ -84,10 +85,25 @@ nordvpn-toggle@ticko4.github.io/
 ├── stylesheet.css
 ├── metadata.json
 └── icons/            NordVPN symbolic icon
+po/                   translations (po/update-pot.sh refreshes the template)
 docs/                 screenshots
 install.sh            install from source, or --pack
 get.sh                install from the latest release
 ```
+
+## Translations
+
+Included: English (source), Arabic, Basque, Bulgarian, Catalan, Chinese (Simplified and Traditional),
+Croatian, Czech, Danish, Dutch, Estonian, Finnish, French, Galician, German, Greek, Hebrew, Hindi,
+Hungarian, Indonesian, Italian, Japanese, Korean, Latvian, Lithuanian, Norwegian Bokmål, Persian, Polish,
+Portuguese (Portugal and Brazil), Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Thai,
+Turkish, Ukrainian and Vietnamese.
+
+Country and city names come from NordVPN and are shown as it gives them (in English).
+
+The translations were drafted with AI assistance and have not all been reviewed by native speakers yet:
+corrections are very welcome. See [po/TRANSLATING.md](po/TRANSLATING.md) for context on every string;
+`po/update-pot.sh` refreshes the template, and `python3 po/check_po.py po/<lang>.po` checks a file.
 
 ## Uninstall
 
